@@ -1,0 +1,6 @@
+from fastapi import APIRouter
+from app.features.profile.router.profiles_routes import router as profiles_router
+
+api_router = APIRouter()
+
+api_router.include_router(profiles_router)
