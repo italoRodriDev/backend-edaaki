@@ -20,7 +20,7 @@ class UserBase(BaseModel):
     code_flat: Optional[str] = None
     status: Optional[str] = Field("ATIVO", description="Status da conta")
     role: Optional[str] = Field("USER", description="Papel de permissão (USER, ADMIN)")
-    gender: Optional[str] = Field(max_length=1, min_length=1)
+    gender: Optional[str] = Field(None, max_length=1, min_length=1) # Ajustado para Optional não conflitar sem default
     civil_state: Optional[str] = None
     birth_date: Optional[datetime] = None
     fantasy_name: Optional[str] = None
@@ -29,6 +29,35 @@ class UserBase(BaseModel):
 # 2. ESQUEMA DE CRIAÇÃO (POST)
 class UserCreate(UserBase):
     password: str = Field(..., min_length=6, description="Senha do usuário")
+
+    model_config = {
+        "json_schema_extra": {
+            "example": {
+                "name": "João da Silva",
+                "email": "joao.silva@email.com",
+                "cpf_cnpj": "123.456.789-00",
+                "phone": "5583999887766",
+                "cep": "58000-000",
+                "lat": "-7.1150",
+                "long": "-34.8631",
+                "address": "Av. Epitácio Pessoa, 1000",
+                "city": "João Pessoa",
+                "state": "PB",
+                "country": "Brasil",
+                "region": "Nordeste",
+                "type": "CLIENTE",
+                "code_flat": "APT-402",
+                "status": "ATIVO",
+                "role": "USER",
+                "gender": "M",
+                "civil_state": "S",
+                "birth_date": "1995-05-15T08:30:00.000Z",
+                "fantasy_name": "Joãozinho Entregas",
+                "logo": "https://firebasestorage.googleapis.com/v0/b/curriculo-italodev.firebasestorage.app/o/profiles%2Fjoao_avatar.png",
+                "password": "senhaSegura123"
+            }
+        }
+    }
 
 # 3. ESQUEMA DE ATUALIZAÇÃO (PUT/PATCH)
 class UserUpdate(BaseModel):
@@ -44,6 +73,16 @@ class UserUpdate(BaseModel):
     logo: Optional[str] = None
     status: Optional[str] = None
     fantasy_name: Optional[str] = None
+
+    model_config = {
+        "json_schema_extra": {
+            "example": {
+                "phone": "5583988776655",
+                "address": "Av. Presidente Epitácio Pessoa, 1500",
+                "logo": "https://firebasestorage.googleapis.com/v0/b/curriculo-italodev.firebasestorage.app/o/profiles%2Fjoao_avatar_v2.png"
+            }
+        }
+    }
 
 # 4. ESQUEMA DE RESPOSTA (GET)
 class UserResponse(UserBase):

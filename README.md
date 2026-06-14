@@ -213,11 +213,11 @@ Profiles
 >> PENDING DELETE /api/v1/profile/delete/{user_id}
 
 Products
->> PENDING POST /api/v1/users/{user_id}/products/
->> PENDING GET /api/v1/users/{user_id}/products/
->> PENDING POST /api/v1/users/{user_id}/products/bulk-update
->> PENDING PUT /api/v1/users/{user_id}/products/{product_id}
->> PENDING DELETE /api/v1/users/{user_id}/products/{product_id}
+>> PASS POST /api/v1/users/{user_id}/products/
+>> PASS GET /api/v1/users/{user_id}/products/
+>> PASS POST /api/v1/users/{user_id}/products/bulk-update
+>> PASS PUT /api/v1/users/{user_id}/products/{product_id}
+>> PASS DELETE /api/v1/users/{user_id}/products/{product_id}
 
 Categories
 >> PASS GET /api/v1/categories/
@@ -232,10 +232,10 @@ Privacity (Contacts)
 >> PENDING DELETE /api/v1/users/{user_id}/contacts/{contact_id}
 
 Addresses
->> PENDING GET /api/v1/users/{user_id}/addresses/
->> PENDING POST /api/v1/users/{user_id}/addresses/
->> PENDING PUT /api/v1/users/{user_id}/addresses/{address_id}
->> PENDING DELETE /api/v1/users/{user_id}/addresses/{address_id}
+>> PASS GET /api/v1/users/{user_id}/addresses/
+>> PASS POST /api/v1/users/{user_id}/addresses/
+>> PASS PUT /api/v1/users/{user_id}/addresses/{address_id}
+>> PASS DELETE /api/v1/users/{user_id}/addresses/{address_id}
 
 Deliveries
 >> PENDING GET /api/v1/users/{user_id}/deliveries/

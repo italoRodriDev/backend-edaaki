@@ -12,12 +12,33 @@ class OrderBase(BaseModel):
 
 class OrderCreate(OrderBase):
     # seller_id não é recebido no body, será injetado pela URL por segurança
-    pass
+    
+    model_config = {
+        "json_schema_extra": {
+            "example": {
+                "buyer_id": 142,
+                "product_id": 5,
+                "price": 35.50,
+                "quantity": 2,
+                "total": 71.00,
+                "status": "pending"
+            }
+        }
+    }
 
 class OrderUpdate(BaseModel):
     # Geralmente, em um pedido, você só atualiza o status ou aplica soft delete
     status: Optional[str] = Field(None, max_length=50)
     deleted: Optional[bool] = None
+
+    model_config = {
+        "json_schema_extra": {
+            "example": {
+                "status": "pago",
+                "deleted": False
+            }
+        }
+    }
 
 class OrderResponse(OrderBase):
     id: int

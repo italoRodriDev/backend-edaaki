@@ -7,11 +7,27 @@ class PrivacityBase(BaseModel):
     policyVersion: str
 
 class PrivacityCreate(PrivacityBase):
-    pass
+    model_config = {
+        "json_schema_extra": {
+            "example": {
+                "isAccepted": True,
+                "policyVersion": "v1.2.0"
+            }
+        }
+    }
 
 class PrivacityUpdate(BaseModel):
     isAccepted: Optional[bool] = None
     policyVersion: Optional[str] = None
+
+    model_config = {
+        "json_schema_extra": {
+            "example": {
+                "isAccepted": False,
+                "policyVersion": "v2.0.0"
+            }
+        }
+    }
 
 class PrivacityResponse(PrivacityBase):
     id: int

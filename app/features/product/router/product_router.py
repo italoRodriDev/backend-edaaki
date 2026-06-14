@@ -1,60 +1,49 @@
-from fastapi import APIRouter, Depends, HTTPException, status, Path
-from sqlalchemy.ext.asyncio import AsyncSession
+from fastapi import APIRouter, Depends, Path, HTTPException, status, Body
+from typing import List
 from app.core.database import get_db_session
-from app.features.product.schemas.product_schemas import ProductCreate, ProductResponse, ProductUpdate
+from app.features.product.schemas.product_schemas import ProductCreate, ProductUpdate, ProductResponse
 from app.features.product.services.product_service import ProductService
 from app.features.product.repositories.product_repo import SQLProductRepository
 
-# O prefixo agora termina em /{user_id} para que todas as rotas abaixo o recebam
 router = APIRouter(prefix="/users/{user_id}/products", tags=["Products"])
 
-def get_product_service(db: AsyncSession = Depends(get_db_session)):
-    repo = SQLProductRepository(db)
-    return ProductService(repo)
+def get_product_service(db=Depends(get_db_session)):
+    return ProductService(SQLProductRepository(db))
 
 @router.post("/", status_code=status.HTTP_201_CREATED, response_model=ProductResponse)
 async def create_product(
-    user_id: int = Path(..., title="ID do Produtor"),
-    data: ProductCreate = ...,
+    user_id: int = Path(..., gt=0),
+    data: ProductCreate = Body(...),
     service: ProductService = Depends(get_product_service)
 ):
-    # Passamos o user_id capturado da URL para o service
-    return await service.create_product(user_id=user_id, product_data=data)
+    return await service.create_product(user_id, data)
 
-@router.get("/", response_model=list[ProductResponse])
+@router.get("/", response_model=List[ProductResponse])
 async def list_products(
-    user_id: int = Path(..., title="ID do Produtor"),
+    user_id: int = Path(..., gt=0),
     service: ProductService = Depends(get_product_service)
 ):
-    return await service.get_my_products(user_id=user_id)
-
-@router.post("/bulk-update")
-async def bulk_update(
-    user_id: int = Path(..., title="ID do Produtor"),
-    items: list = ..., 
-    service: ProductService = Depends(get_product_service)
-):
-    return await service.update_products_in_bulk(user_id=user_id, items=items)
+    return await service.get_my_products(user_id)
 
 @router.put("/{product_id}", status_code=status.HTTP_200_OK)
 async def update_product(
-    product_id: int = Path(..., title="ID do Produto"),
-    user_id: int = Path(..., title="ID do Produtor"),
-    data: ProductUpdate = ...,
+    user_id: int = Path(..., gt=0),
+    product_id: int = Path(..., gt=0),
+    data: ProductUpdate = Body(...),
     service: ProductService = Depends(get_product_service)
 ):
-    updated = await service.update_product(user_id, product_id, data)
-    if not updated:
-        raise HTTPException(status_code=404, detail="Produto não encontrado ou você não tem permissão para editá-lo.")
-    return {"message": "Produto atualizado com sucesso!"}
+    success = await service.update_product(user_id, product_id, data)
+    if not success:
+        raise HTTPException(status_code=404, detail="Produto não encontrado ou acesso negado.")
+    return {"message": "Produto atualizado com sucesso."}
 
 @router.delete("/{product_id}", status_code=status.HTTP_204_NO_CONTENT)
 async def delete_product(
-    product_id: int = Path(..., title="ID do Produto"),
-    user_id: int = Path(..., title="ID do Produtor"),
+    user_id: int = Path(..., gt=0),
+    product_id: int = Path(..., gt=0),
     service: ProductService = Depends(get_product_service)
 ):
-    deleted = await service.delete_product(user_id, product_id)
-    if not deleted:
-        raise HTTPException(status_code=404, detail="Produto não encontrado ou você não tem permissão para excluí-lo.")
+    success = await service.delete_product(user_id, product_id)
+    if not success:
+        raise HTTPException(status_code=404, detail="Produto não encontrado ou acesso negado.")
     return None
