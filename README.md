@@ -203,3 +203,60 @@ Estrutura recomendada:
   "logo": "https://firebasestorage.googleapis.com/v0/b/curriculo-italodev.firebasestorage.app/o/profiles%2Fjoao_avatar.png",
   "password": "senhaSegura123"
 }
+
+# TESTES DE ROTAS
+
+Profiles
+>> PENDING POST /api/v1/profile/create
+>> PENDING GET /api/v1/profile/{user_id}
+>> PENDING PUT /api/v1/profile/update/{user_id}
+>> PENDING DELETE /api/v1/profile/delete/{user_id}
+
+Products
+>> PENDING POST /api/v1/users/{user_id}/products/
+>> PENDING GET /api/v1/users/{user_id}/products/
+>> PENDING POST /api/v1/users/{user_id}/products/bulk-update
+>> PENDING PUT /api/v1/users/{user_id}/products/{product_id}
+>> PENDING DELETE /api/v1/users/{user_id}/products/{product_id}
+
+Categories
+>> PASS GET /api/v1/categories/
+>> PASS POST /api/v1/categories/
+>> PASS PUT /api/v1/categories/{category_id}
+>> PASS DELETE /api/v1/categories/{category_id}
+
+Privacity (Contacts)
+>> PASS GET /api/v1/users/{user_id}/contacts/
+>> ERRO POST /api/v1/users/{user_id}/contacts/
+>> PENDING PUT /api/v1/users/{user_id}/contacts/{contact_id}
+>> PENDING DELETE /api/v1/users/{user_id}/contacts/{contact_id}
+
+Addresses
+>> PENDING GET /api/v1/users/{user_id}/addresses/
+>> PENDING POST /api/v1/users/{user_id}/addresses/
+>> PENDING PUT /api/v1/users/{user_id}/addresses/{address_id}
+>> PENDING DELETE /api/v1/users/{user_id}/addresses/{address_id}
+
+Deliveries
+>> PENDING GET /api/v1/users/{user_id}/deliveries/
+>> PENDING POST /api/v1/users/{user_id}/deliveries/
+>> PENDING PUT /api/v1/users/{user_id}/deliveries/{delivery_id}
+>> PENDING DELETE /api/v1/users/{user_id}/deliveries/{delivery_id}
+
+Orders
+>> PENDING GET /api/v1/users/{user_id}/orders/
+>> PENDING POST /api/v1/users/{user_id}/orders/
+>> PENDING PUT /api/v1/users/{user_id}/orders/{order_id}
+>> PENDING DELETE /api/v1/users/{user_id}/orders/{order_id}
+
+Credit Cards
+>> PENDING POST /api/v1/users/{user_id}/credit-cards/
+>> PENDING GET /api/v1/users/{user_id}/credit-cards/
+>> PENDING DELETE /api/v1/users/{user_id}/credit-cards/{card_id}
+
+Plans
+>> PENDING GET /api/v1/plans/
+>> PENDING POST /api/v1/plans/
+>> PENDING DELETE /api/v1/plans/{plan_id}
+
+

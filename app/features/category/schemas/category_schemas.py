@@ -5,7 +5,7 @@ class CategoryBase(BaseModel):
     name: str
     colour: Optional[str] = None
     image: Optional[str] = None
-    macro: Optional[int] = None
+    macro: Optional[str] = None
 
 class CategoryCreate(CategoryBase):
     pass
@@ -20,4 +20,4 @@ class CategoryUpdate(BaseModel):
     name: Optional[str] = None
     colour: Optional[str] = None
     image: Optional[str] = None
-    macro: Optional[int] = None
+    macro: Optional[str] = None
