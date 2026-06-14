@@ -6,9 +6,9 @@ from app.features.auth.auth import get_current_user
 from app.core.database import get_db_session
 
 # Importações de Schemas, Repositório e Serviço
-from app.features.profile.repositories.profiles_repo import SQLUserRepository
+from app.features.profile.repositories.profile_repo import SQLUserRepository
 from app.features.profile.services.profile_service import ProfileService
-from app.features.profile.schemas.profiles_schemas import UserCreate, UserResponse, UserUpdate
+from app.features.profile.schemas.profile_schemas import UserCreate, UserResponse, UserUpdate
 
 # Definindo o roteador
 router = APIRouter(prefix="/profile", tags=["Profiles"])

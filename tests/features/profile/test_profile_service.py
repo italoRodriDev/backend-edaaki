@@ -1,6 +1,6 @@
 import pytest
 from unittest.mock import AsyncMock, MagicMock
-from app.features.profile.schemas.profiles_schemas import UserCreate, UserUpdate
+from app.features.profile.schemas.profile_schemas import UserCreate, UserUpdate
 from app.features.profile.services.profile_service import ProfileService
 
 @pytest.fixture

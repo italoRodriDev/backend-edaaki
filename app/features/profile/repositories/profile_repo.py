@@ -4,7 +4,7 @@ from sqlalchemy import update as sql_update, delete as sql_delete
 from datetime import datetime, timezone
 
 from app.core.firebase import get_bucket
-from app.features.profile.interfaces.interfaces import IProfileRepository # Ajuste o nome da interface se necessário
+from app.features.profile.interfaces.profile_interface import IProfileRepository # Ajuste o nome da interface se necessário
 from app.features.profile.models.profile_model import ProfileModel
 
 class SQLUserRepository(IProfileRepository):
@@ -14,6 +14,8 @@ class SQLUserRepository(IProfileRepository):
         self.bucket = get_bucket()
 
     async def save_user(self, user_data: dict) -> dict:
+        db_name = self.session.bind.url.database
+        print(f"DEBUG: Gravando no banco -> {db_name}")
         # Define as datas de criação
         user_data['created_at'] = datetime.now(timezone.utc)
         user_data['updated_at'] = datetime.now(timezone.utc)

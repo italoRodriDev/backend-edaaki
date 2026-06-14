@@ -1,7 +1,7 @@
 
 from loguru import logger
-from app.features.profile.schemas.profiles_schemas import UserCreate, UserUpdate 
-from app.features.profile.interfaces.interfaces import IProfileRepository
+from app.features.profile.schemas.profile_schemas import UserCreate, UserUpdate 
+from app.features.profile.interfaces.profile_interface import IProfileRepository
 
 class ProfileService:
     def __init__(self, repo: IProfileRepository):
