@@ -13,7 +13,7 @@ class IProfileRepository(ABC):
         pass
 
     @abstractmethod
-    async def update(self, user_id: int, update_data: dict) -> dict | None:
+    async def update(self, access_token: int, update_data: dict) -> dict | None:
         """Atualiza os dados de um usuário existente"""
         pass
 

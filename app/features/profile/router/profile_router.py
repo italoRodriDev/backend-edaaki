@@ -31,39 +31,39 @@ async def create_user(
         raise HTTPException(status_code=500, detail=f"Erro interno ao criar usuário: {str(e)}")
 
 # (GET) - Buscar Usuário por ID
-@router.get("/{user_id}", response_model=UserResponse)
+@router.get("/{access_token}", response_model=UserResponse)
 async def get_user(
-    user_id: int, # No SQL, o ID costuma ser inteiro
+    access_token: str, # No SQL, o ID costuma ser inteiro
     service: ProfileService = Depends(get_user_service),
     #current_user: dict = Depends(get_current_user) #
 ):
     try:
-        return await service.get_user(user_id)
+        return await service.get_user(access_token)
     except ValueError as val_err:
         raise HTTPException(status_code=404, detail=str(val_err))
 
 # (PUT) - Atualizar Usuário
-@router.put("/update/{user_id}", response_model=UserResponse)
+@router.put("/update/{access_token}", response_model=UserResponse)
 async def update_user(
-    user_id: int,
+    access_token: str,
     user_data: UserUpdate,
     service: ProfileService = Depends(get_user_service),
     #current_user: dict = Depends(get_current_user) #
 ):
     try:
-        return await service.update_user(user_id, user_data)
+        return await service.update_user(access_token, user_data)
     except ValueError as val_err:
         raise HTTPException(status_code=404, detail=str(val_err))
 
 # (DELETE) - Deletar Usuário
-@router.delete('/delete/{user_id}', status_code=status.HTTP_204_NO_CONTENT)
+@router.delete('/delete/{access_token}', status_code=status.HTTP_204_NO_CONTENT)
 async def delete_user(
-    user_id: int,
+    access_token: str,
     service: ProfileService = Depends(get_user_service),
     #current_user: dict = Depends(get_current_user)
 ):
     try:
-        await service.delete_user(user_id)
+        await service.delete_user(access_token)
         return None
     except ValueError as val_err:
         raise HTTPException(status_code=404, detail=str(val_err))

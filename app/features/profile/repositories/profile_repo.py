@@ -52,9 +52,9 @@ class SQLProfileRepository(IProfileRepository):
         
         return self._to_dict(new_user)
 
-    async def get_user_by_id(self, user_id: int) -> dict | None:
+    async def get_user_by_id(self, access_token: int) -> dict | None:
         result = await self.session.execute(
-            select(ProfileModel).where(ProfileModel.id == user_id)
+            select(ProfileModel).where(ProfileModel.access_token == access_token)
         )
         user = result.scalars().first()
         
@@ -62,19 +62,19 @@ class SQLProfileRepository(IProfileRepository):
             return self._to_dict(user)
         return None
 
-    async def update(self, user_id: int, update_data: dict) -> dict | None:
+    async def update(self, access_token: int, update_data: dict) -> dict | None:
         update_data['updated_at'] = datetime.now(timezone.utc)
         
         stmt = (
             sql_update(ProfileModel)
-            .where(ProfileModel.id == user_id)
+            .where(ProfileModel.access_token == access_token)
             .values(**update_data)
         )
         
         await self.session.execute(stmt)
         await self.session.commit()
         
-        return await self.get_user_by_id(user_id)
+        return await self.get_user_by_id(access_token)
 
     async def delete(self, user_id: int) -> bool:
         stmt = sql_delete(ProfileModel).where(ProfileModel.id == user_id)
