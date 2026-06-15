@@ -6,7 +6,7 @@ from app.features.auth.auth import get_current_user
 from app.core.database import get_db_session
 
 # Importações de Schemas, Repositório e Serviço
-from app.features.profile.repositories.profile_repo import SQLUserRepository
+from app.features.profile.repositories.profile_repo import SQLProfileRepository
 from app.features.profile.services.profile_service import ProfileService
 from app.features.profile.schemas.profile_schemas import UserCreate, UserResponse, UserUpdate
 
@@ -15,7 +15,7 @@ router = APIRouter(prefix="/profile", tags=["Profiles"])
 
 # Injeção de Dependência do Serviço conectando com a Sessão SQL
 def get_user_service(session: AsyncSession = Depends(get_db_session)):
-    repo = SQLUserRepository(session)
+    repo = SQLProfileRepository(session)
     return ProfileService(repo)
 
 # (POST) - Criar Usuário

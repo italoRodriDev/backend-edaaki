@@ -5,6 +5,7 @@ from datetime import datetime
 # 1. ESQUEMA BASE (Campos compartilhados)
 class UserBase(BaseModel):
     name: str = Field(..., min_length=2, description="Nome completo do usuário")
+    access_token: Optional[str] = None
     email: EmailStr = Field(..., description="E-mail válido e único")
     cpf_cnpj: Optional[str] = Field(None, description="Documento (CPF ou CNPJ)")
     phone: Optional[str] = Field(None, description="Telefone de contato")
@@ -14,7 +15,7 @@ class UserBase(BaseModel):
     address: Optional[str] = None
     city: Optional[str] = None
     state: Optional[str] = None
-    country: Optional[str] = Field("Brasil", description="País padrão")
+    country: Optional[str] = Field("BRA", description="País padrão")
     region: Optional[str] = None
     type: Optional[str] = Field("CLIENTE", description="Tipo de usuário (ex: CLIENTE, LOJA)")
     code_flat: Optional[str] = None
@@ -34,6 +35,7 @@ class UserCreate(UserBase):
         "json_schema_extra": {
             "example": {
                 "name": "João da Silva",
+                "access_token": "12345",
                 "email": "joao.silva@email.com",
                 "cpf_cnpj": "123.456.789-00",
                 "phone": "5583999887766",
@@ -43,7 +45,7 @@ class UserCreate(UserBase):
                 "address": "Av. Epitácio Pessoa, 1000",
                 "city": "João Pessoa",
                 "state": "PB",
-                "country": "Brasil",
+                "country": "BRA",
                 "region": "Nordeste",
                 "type": "CLIENTE",
                 "code_flat": "APT-402",

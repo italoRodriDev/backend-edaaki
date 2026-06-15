@@ -7,24 +7,47 @@ from app.core.firebase import get_bucket
 from app.features.profile.interfaces.profile_interface import IProfileRepository # Ajuste o nome da interface se necessário
 from app.features.profile.models.profile_model import ProfileModel
 
-class SQLUserRepository(IProfileRepository):
+class SQLProfileRepository(IProfileRepository):
     def __init__(self, session: AsyncSession):
         self.session = session
         # Mantemos o bucket do Firebase para lidar com o Firestorage!
         self.bucket = get_bucket()
+        
+    async def find_by_email(self, email: str) -> dict | None:
+        stmt = select(ProfileModel).where(ProfileModel.email == email)
+        result = await self.session.execute(stmt)
+        user = result.scalars().first()
+        
+        if user:
+            print(f"DEBUG: Usuário encontrado no banco: {user.email}")
+            return self._to_dict(user)
+        
+        print(f"DEBUG: Nenhum usuário encontrado para {email}")
+        return None
 
     async def save_user(self, user_data: dict) -> dict:
-        db_name = self.session.bind.url.database
-        print(f"DEBUG: Gravando no banco -> {db_name}")
-        # Define as datas de criação
-        user_data['created_at'] = datetime.now(timezone.utc)
-        user_data['updated_at'] = datetime.now(timezone.utc)
+        # 1. Garanta que as datas estão no dicionário
+        from datetime import datetime
+        now = datetime.now()
+        user_data['created_at'] = now
+        user_data['updated_at'] = now
         
-        # O logo já deve vir no user_data (URL gerada pelo Firestorage)
-        new_user = ProfileModel(**user_data)
+        # 2. O erro acontece porque você está passando um dict para o ProfileModel(**user_data)
+        # e o ProfileModel não tem created_at/updated_at nos argumentos de __init__.
+        # Vamos remover do objeto que criamos, mas manter para o INSERT:
+        
+        data_para_modelo = user_data.copy()
+        data_para_modelo.pop('created_at', None)
+        data_para_modelo.pop('updated_at', None)
+        
+        new_user = ProfileModel(**data_para_modelo)
+        
+        # 3. Forçamos o SQLALchemy a incluir as colunas manualmente no objeto:
+        new_user.created_at = user_data['created_at']
+        new_user.updated_at = user_data['updated_at']
         
         self.session.add(new_user)
-        await self.session.commit()
+        await self.session.commit() # Agora as datas serão incluídas!
         await self.session.refresh(new_user)
         
         return self._to_dict(new_user)

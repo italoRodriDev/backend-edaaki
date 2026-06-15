@@ -1,11 +1,11 @@
-from sqlalchemy import Column, Integer, String, DateTime
+from sqlalchemy import Column, Integer, String, DateTime, func
 from sqlalchemy.ext.declarative import declarative_base
 
 Base = declarative_base()
 
 class ProfileModel(Base):
     __tablename__ = "users"
-    __table_args__ = {"schema": "dbo"} # 🚀 Aponta direto pro seu schema do print
+    __table_args__ = {"schema": "dbo"}
 
     id = Column(Integer, primary_key=True, index=True)
     name = Column(String)
@@ -32,5 +32,5 @@ class ProfileModel(Base):
     birth_date = Column(DateTime)
     fantasy_name = Column(String)
     logo = Column(String) # Aqui guardaremos a URL do Firestorage
-    created_at = Column(DateTime)
-    updated_at = Column(DateTime)
+    created_at = Column(DateTime, nullable=False, default=func.now())
+    updated_at = Column(DateTime, nullable=False, default=func.now(), onupdate=func.now())

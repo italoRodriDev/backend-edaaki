@@ -9,6 +9,7 @@ from app.features.delivery.router.delivery_router import router as delivery_rout
 from app.features.order.router.order_router import router as order_router
 from app.features.cards.router.credit_card_router import router as cards_router
 from app.features.plan.router.plan_router import router as plan_router
+from app.features.auth.router.auth_router import router as auth_router
 
 api_router = APIRouter()
 
@@ -22,3 +23,4 @@ api_router.include_router(router=delivery_router)
 api_router.include_router(router=order_router)
 api_router.include_router(router=cards_router)
 api_router.include_router(router=plan_router)
+api_router.include_router(router=auth_router)

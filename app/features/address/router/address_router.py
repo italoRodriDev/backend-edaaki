@@ -5,7 +5,7 @@ from app.features.address.schemas.address_schemas import AddressCreate, AddressU
 from app.features.address.services.address_service import AddressService
 from app.features.address.repositories.address_repo import SQLAddressRepository # Implementação real
 
-router = APIRouter(prefix="/users/{user_id}/addresses", tags=["Addresses"])
+router = APIRouter(prefix="/users/{user_id}/address", tags=["Address"])
 
 def get_service(db: AsyncSession = Depends(get_db_session)) -> AddressService:
     return AddressService(SQLAddressRepository(db))
